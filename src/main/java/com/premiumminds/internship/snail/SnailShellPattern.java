@@ -8,9 +8,14 @@ import java.util.concurrent.Future;
  */
 class SnailShellPattern implements ISnailShellPattern {
 
-  private int order_index = 0;
-  private int actual_row = 0;
-  private int actual_column = 0;
+  // last index of the array with the order of values that represent a snail shell pattern
+  private int orderIndex = 0;
+
+  // index of the current row being persued
+  private int actualRow = 0;
+
+  // index of the current column being persued
+  private int actualColumn = 0;
 
   /**
    * Method to get snailshell pattern
@@ -19,31 +24,40 @@ class SnailShellPattern implements ISnailShellPattern {
    * @return order array of values thar represent a snail shell pattern
    */
   public Future<int[]> getSnailShell(int[][] matrix) {
-    
-    int[] order = new int[matrix.length * matrix[0].length]; // the result matrix 
-    boolean[][] already_persued = new boolean[matrix.length][matrix[0].length]; // true => already persued; false otherwise
-    char direction = matrix.length == 1 ? 'd' : 'r'; // r -> right; d -> down; l -> left; u -> up
 
-    if (matrix.length == 0 && matrix[0].length == 0) { // retorna a matrix [] caso a matrix seja vazia
+    // Verifies if the matrix has no elements
+    if (matrix.length == 0 && matrix[0].length == 0) { // returns [] in case matrix = [[]]
       return CompletableFuture.completedFuture(new int[0]);
     }
 
-    while (order_index < order.length) {
-      switch(direction) {
-        case 'r':
-          order = goThroughRightElements(matrix, already_persued, order);
+    int[] order = new int[matrix.length * matrix[0].length]; // the array with the order to be returned
+    boolean[][] already_persued = new boolean[matrix.length][matrix[0].length]; // true => already persued; false otherwise
+    char direction = 'r'; // the direction to traverse the elements (right, down, left or up)
+
+    while (orderIndex < order.length) {
+      switch (direction) {
+        case 'r': // right
+          for (int j = 0; j < matrix[0].length; j++) {
+            traverseRowElements(matrix, already_persued, order, j);
+          }
           direction = 'd';
           break;
-        case 'd':
-          order = goThroughDownElements(matrix, already_persued, order);
+        case 'd': // down
+          for (int i = 0; i < matrix.length; i++) {
+            traverseColumnElements(matrix, already_persued, order, i);
+          }
           direction = 'l';
           break;
-        case 'l':
-          order = goThroughLeftElements(matrix, already_persued, order);
+        case 'l': // left
+          for (int j = matrix[0].length - 1; j >= 0; j--) {
+            traverseRowElements(matrix, already_persued, order, j);
+          }
           direction = 'u';
           break;
-        case 'u':
-          order = goThroughUpElements(matrix, already_persued, order);
+        case 'u': // up
+          for (int i = matrix.length - 1; i >= 0; i--) {
+            traverseColumnElements(matrix, already_persued, order, i);
+          }
           direction = 'r';
           break;
       }
@@ -51,51 +65,37 @@ class SnailShellPattern implements ISnailShellPattern {
     return CompletableFuture.completedFuture(order);
   };
 
-  private int[] goThroughUpElements(int[][] matrix, boolean[][] already_persued, int[] order) {
-    for (int i = matrix.length - 1; i >= 0 ; i--) {
-      if (!already_persued[i][actual_column]) { //enquanto os elementos forem falsos (nao tiverem sido percorridos)
-        order[order_index] = matrix[i][actual_column];
-        already_persued[i][actual_column] = true;
-        order_index++;
-        this.actual_row = i; //muda o index da linha atual para o index da linha do ultimo elemento a ser percorrido
-      }
+  /**
+   * Method to traverse the elements of a row 
+   * 
+   * @param matrix matrix of numbers to go through
+   * @param already_persued boolean matrix that indicates whether the element was persued or not
+   * @param order the array with all the elements persued
+   * @param index current column index of the row being traversed
+   */
+  private void traverseRowElements(int[][] matrix, boolean[][] already_persued, int[] order, int columnIndex) {
+    if (!already_persued[actualRow][columnIndex]) { // while the elements of the actual row have not been persued
+      order[orderIndex] = matrix[actualRow][columnIndex];
+      already_persued[actualRow][columnIndex] = true;
+      this.actualColumn = columnIndex; // changes the index of the actual column to the column's index of the last element persued
+      orderIndex++;
     }
-    return order;
   }
 
-  private int[] goThroughLeftElements(int[][] matrix, boolean[][] already_persued, int[] order) {
-    for (int j = matrix[0].length - 1; j >= 0; j--) { // percorre a linha atual da matrix
-      if (!already_persued[actual_row][j]) { //enquanto os elementos forem falsos (nao tiverem sido percorridos)
-        order[order_index] = matrix[actual_row][j];
-        already_persued[actual_row][j] = true;
-        order_index++;
-        this.actual_column = j; //muda o index da coluna atual para o index da coluna do ultimo elemento a ser percorrido
-      }
+  /**
+   * Method to traverse the elements of a column 
+   * 
+   * @param matrix matrix of numbers to go through
+   * @param already_persued boolean matrix that indicates whether the element was persued or not
+   * @param order the array with all the elements persued
+   * @param index current row index of the column being traversed
+   */
+  private void traverseColumnElements(int[][] matrix, boolean[][] already_persued, int[] order, int rowIndex) {
+    if (!already_persued[rowIndex][actualColumn]) { // while the elements of the actual column have not been persued
+      order[orderIndex] = matrix[rowIndex][actualColumn];
+      already_persued[rowIndex][actualColumn] = true;
+      this.actualRow = rowIndex; // changes the index of the actual row to the row's index of the last element persued
+      orderIndex++;
     }
-    return order;
-  }
-
-  private int[] goThroughDownElements(int[][] matrix, boolean[][] already_persued, int[] order) {
-    for (int i = 0; i < matrix.length; i++) {
-      if (!already_persued[i][actual_column]) { //enquanto os elementos forem falsos (nao tiverem sido percorridos)
-        order[order_index] = matrix[i][actual_column];
-        already_persued[i][actual_column] = true;
-        order_index++;
-        this.actual_row = i; //muda o index da linha atual para o index da linha do ultimo elemento a ser percorrido
-      }
-    }
-    return order;
-  }
-
-  public int[] goThroughRightElements(int[][] matrix, boolean[][] already_persued, int[] order) {
-    for (int j = 0; j < matrix[0].length; j++) { // percorre a linha atual da matrix
-      if (!already_persued[actual_row][j]) { //enquanto os elementos forem falsos (nao tiverem sido percorridos)
-        order[order_index] = matrix[actual_row][j];
-        already_persued[actual_row][j] = true;
-        order_index++;
-        this.actual_column = j; //muda o index da coluna atual para o index da coluna do ultimo elemento a ser percorrido
-      }
-    }
-    return order;
   }
 }
