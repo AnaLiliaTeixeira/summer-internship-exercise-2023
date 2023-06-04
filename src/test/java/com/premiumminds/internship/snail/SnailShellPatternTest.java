@@ -42,7 +42,7 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { 1, 2, 3, 1, 4, 7, 7, 9, 8, 7, 7, 4, 5, 6, 9, 8};
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -52,7 +52,7 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 5, 5, 4, 3, 2, 2, 2, 3, 4, 4, 3 };
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -71,7 +71,7 @@ public class SnailShellPatternTest {
     for (int i = 0; i < expected.length; i++) {
       expected[i] = 2;
     }
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -81,7 +81,7 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { 1, 2, 5, 7, 6, 4 };
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -91,7 +91,7 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { 1, 2, 3, 4, 8, 7, 6, 5 };
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -101,7 +101,7 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { 1, 4, 6 };
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -111,7 +111,7 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { 1, 2, 3 };
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -121,7 +121,7 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { };
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 
   @Test
@@ -131,6 +131,6 @@ public class SnailShellPatternTest {
     Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
     int[] result = count.get(10, TimeUnit.SECONDS);
     int[] expected = { 1 };
-    assertArrayEquals(result, expected);
+    assertArrayEquals(expected, result);
   }
 }
