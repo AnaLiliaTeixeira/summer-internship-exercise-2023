@@ -34,4 +34,54 @@ public class SnailShellPatternTest {
     int[] expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     assertArrayEquals(result, expected);
   }
+
+  @Test
+  public void TestMatrix4x4()
+      throws InterruptedException, ExecutionException, TimeoutException {
+    int[][] matrix = { { 1, 2, 3, 1}, { 4, 5, 6, 4}, { 7, 8, 9, 7}, {7, 8, 9, 7} };
+    Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
+    int[] result = count.get(10, TimeUnit.SECONDS);
+    int[] expected = { 1, 2, 3, 1, 4, 7, 7, 9, 8, 7, 7, 4, 5, 6, 9, 8};
+    assertArrayEquals(result, expected);
+  }
+
+  @Test
+  public void TestMatrix2x3()
+      throws InterruptedException, ExecutionException, TimeoutException {
+    int[][] matrix = { { 1, 2 }, { 4, 5 }, { 6, 7 }};
+    Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
+    int[] result = count.get(10, TimeUnit.SECONDS);
+    int[] expected = { 1, 2, 5, 7, 6, 4 };
+    assertArrayEquals(result, expected);
+  }
+
+  @Test
+  public void TestMatrixWith1Column()
+      throws InterruptedException, ExecutionException, TimeoutException {
+    int[][] matrix = { { 1 }, { 4 }, { 6 }};
+    Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
+    int[] result = count.get(10, TimeUnit.SECONDS);
+    int[] expected = { 1, 4, 6 };
+    assertArrayEquals(result, expected);
+  }
+
+  @Test
+  public void TestEmptyMatrix()
+      throws InterruptedException, ExecutionException, TimeoutException {
+    int[][] matrix = { { } };
+    Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
+    int[] result = count.get(10, TimeUnit.SECONDS);
+    int[] expected = { };
+    assertArrayEquals(result, expected);
+  }
+
+  @Test
+  public void Test1ElementMatrix()
+      throws InterruptedException, ExecutionException, TimeoutException {
+    int[][] matrix = { { 1 } };
+    Future<int[]> count = new SnailShellPattern().getSnailShell(matrix);
+    int[] result = count.get(10, TimeUnit.SECONDS);
+    int[] expected = { 1 };
+    assertArrayEquals(result, expected);
+  }
 }
